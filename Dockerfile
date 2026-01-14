@@ -53,11 +53,11 @@ COPY --from=build /usr/src/app/node_modules ./node_modules
 COPY --from=build /usr/src/app/package.json ./package.json
 
 #cria as variaveis de ambiente (apenas para ambiente de teste, pois essa não é a forma correta)
-ENV CLOUDFLARE_ACCESS_KEY_ID="6f834143a91f0bd2b454a38cc23e0687"
-ENV CLOUDFLARE_SECRET_ACCESS_KEY="77a67ca70acf5b5411a755b6b2b62b0ff9aaac42c048122d508ed651566e7834"
-ENV CLOUDFLARE_BUCKET="ftr-upload-widget"
-ENV CLOUDFLARE_ACCOUNT_ID="be2761f23195a62d62db6ecbb74d0b9b"
-ENV CLOUDFLARE_PUBLIC_URL="https://pub-821b681ac2a14313af1607114fd46033.r2.dev"
+# ENV CLOUDFLARE_ACCESS_KEY_ID=""
+# ENV CLOUDFLARE_SECRET_ACCESS_KEY=""
+# ENV CLOUDFLARE_BUCKET=""
+# ENV CLOUDFLARE_ACCOUNT_ID=""
+# ENV CLOUDFLARE_PUBLIC_URL=""
 
 # Informa que a aplicação dentro do container utiliza a porta 3333
 EXPOSE 3333

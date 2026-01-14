@@ -7,3 +7,4 @@ import "../chunk-7VYRV3HJ.mjs";
 export {
   uploadImageRoute
 };
+

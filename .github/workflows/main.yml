@@ -22,6 +22,6 @@ jobs:
           aws-region: ${{vars.AWS_REGION}}
       
       - name: Login to Amazon ECR
-        id: login_ecr
+        id: login Ecr
         uses: aws-actions/amazon-ecr-login@v2
 

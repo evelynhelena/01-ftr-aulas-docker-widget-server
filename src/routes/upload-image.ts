@@ -1,5 +1,3 @@
-//teste para saber se o ecr está funcionando naa AWS
-
 import type { FastifyInstance } from "fastify";
 import { UploadImageToStorage } from "../functions/upload-image-to-storage";
 import { R2StorageProvider } from "../storage/providers/r2-storage";

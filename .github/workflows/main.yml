@@ -1,4 +1,4 @@
-name: Widget-server pipe
+name: Widget-server pipe ERC
 
 on:
   push:

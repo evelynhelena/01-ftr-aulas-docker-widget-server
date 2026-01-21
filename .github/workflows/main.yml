@@ -37,8 +37,7 @@ jobs:
           ECR_REGISTRY: ${{steps.login_ecr.outputs.registry}}
           ECR_REPOSITORY: ${{vars.ECR_REPOSITORY}}
           IMAGE_TAG: ${{ steps.generate_tag.outputs.sha }}
-          ECR_CONFIG: ${{ vars.ECR_REGISTRY/vars.ECR_REPOSITORY:vars.IMAGE_TAG }}
         run: |
-          docker build -t $ECR_CONFIG .
-          docker push $ECR_CONFIG
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 

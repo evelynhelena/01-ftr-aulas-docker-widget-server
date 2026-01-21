@@ -20,6 +20,12 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{vars.AWS_REGION}}
+
+      - name: Generete tag
+        id: generate_tag
+        run:
+          SHA=$(echo $GITHUB_SHA | head -c7)
+          echo "sha=$SHA" >> $GITHUB_OUTPUT
       
       - name: Login to Amazon ECR
         id: login_ecr
@@ -30,8 +36,9 @@ jobs:
         env:
           ECR_REGISTRY: ${{steps.login_ecr.outputs.registry}}
           ECR_REPOSITORY: ${{vars.ECR_REPOSITORY}}
+          IMAGE_TAG: ${{ steps.generate_tag.outputs.sha }}
+          ECR_CONFIG: ${{ vars.ECR_REGISTRY/vars.ECR_REPOSITORY:vars.IMAGE_TAG }}
         run: |
-          docker build -t widget-server:v3 .
-          docker tag widget-server:v3 $ECR_REGISTRY/$ECR_REPOSITORY:v3
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:v3
+          docker build -t $ECR_CONFIG .
+          docker push $ECR_CONFIG
 

@@ -1,3 +1,5 @@
+//teste docker tag
+
 import { fastify } from 'fastify'
 import { fastifyCors } from '@fastify/cors'
 import { uploadImageRoute } from './routes/upload-image'

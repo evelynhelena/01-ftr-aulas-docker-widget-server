@@ -15,9 +15,9 @@ jobs:
         id: checkout
         uses: actions/checkout@v6
 
-      - uses: Configure node
+      - name: Configure node
         id: configure-node
-      - uses: actions/setup-node@v6
+        uses: actions/setup-node@v6
         with:
           node-version: 24
     

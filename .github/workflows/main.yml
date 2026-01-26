@@ -8,10 +8,24 @@ jobs:
   Build:
     name: Build
     runs-on: ubuntu-latest
+    
     steps:
+
       - name: Checkout
-        id: Checkout
+        id: checkout
         uses: actions/checkout@v6
+
+      - uses: Configure node
+        id: configure-node
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+    
+      - name: Install pnpm
+        id: install-pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
 
       - name: Configure AWS Credentials
         id: configure_aws_credentials
@@ -39,14 +53,4 @@ jobs:
           push: true
           tags: |
             ${{steps.login_ecr.outputs.registry}}/${{vars.ECR_REPOSITORY}}:${{ steps.generate_tag.outputs.sha }}
-
-      # - name: Build and push the image to AWS ECR
-      #   id: build-push-image
-      #   env:
-      #     ECR_REGISTRY: ${{steps.login_ecr.outputs.registry}}
-      #     ECR_REPOSITORY: ${{vars.ECR_REPOSITORY}}
-      #     IMAGE_TAG: ${{ steps.generate_tag.outputs.sha }}
-      #   run: |
-      #     docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-      #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 

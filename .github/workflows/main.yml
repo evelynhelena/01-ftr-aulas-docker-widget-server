@@ -59,4 +59,31 @@ jobs:
           push: true
           tags: |
             ${{steps.login_ecr.outputs.registry}}/${{vars.ECR_REPOSITORY}}:${{ steps.generate_tag.outputs.sha }}
+      
+      - name: Build and push the image to AWS ECR
+        id: build-push-image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: |
+            ${{steps.login_ecr.outputs.registry}}/${{vars.ECR_REPOSITORY}}:test
 
+      - name: Run Trivy vulnerability scanner
+        id: run-trivy-vulnerability-scanner
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          image-ref: '${{steps.login_ecr.outputs.registry}}/${{vars.ECR_REPOSITORY}}:test'
+          format: 'table'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH,MIDIUM,LOW'
+
+      - name: Build and push the image to AWS ECR
+        id: build-push-image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{steps.login_ecr.outputs.registry}}/${{vars.ECR_REPOSITORY}}:${{ steps.generate_tag.outputs.sha }}

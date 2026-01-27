@@ -52,7 +52,6 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build and push the image to AWS ECR
-        id: build-push-image
         uses: docker/build-push-action@v6
         with:
           context: .

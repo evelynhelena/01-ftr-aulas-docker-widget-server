@@ -41,21 +41,28 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{vars.AWS_REGION}}
 
+      - name: Login to Amazon ECR
+        id: login_ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Docker Buildx
+        id: set-up-docker-build
+        uses: docker/setup-buildx-action@v3
+
       - name: Generete tag
         id: generate_tag
         run: |
           SHA=$(echo $GITHUB_SHA | head -c7)
           echo "sha=$SHA" >> $GITHUB_OUTPUT
       
-      - name: Login to Amazon ECR
-        id: login_ecr
-        uses: aws-actions/amazon-ecr-login@v2
       
       - name: Build and push the image to AWS ECR
         uses: docker/build-push-action@v6
         with:
           context: .
           load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{steps.login_ecr.outputs.registry}}/${{vars.ECR_REPOSITORY}}:test
 
@@ -75,5 +82,6 @@ jobs:
         with:
           context: .
           push: true
+          cache-from: type=gha
           tags: |
             ${{steps.login_ecr.outputs.registry}}/${{vars.ECR_REPOSITORY}}:${{ steps.generate_tag.outputs.sha }}
